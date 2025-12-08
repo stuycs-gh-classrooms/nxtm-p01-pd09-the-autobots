@@ -43,11 +43,10 @@ Scoreboard
 How will you be using arrays in this project?
 
 1D Array:
-- Create multiple bullets at a time
+- Bullet Projectiles: Our spaceship and enemies
 
 2D Array:
 - Create rows of enemies
-
 
 ### Controls
 How will your program be controlled? List all keyboard commands and mouse interactions.
@@ -69,12 +68,12 @@ CLASS enemies
 - Instance variables:
   - 2d array of enemies
 - METHODS
-  - create enemies
-  - enemies move
+  - create enemies ()
+  - enemies move(direction)
 
 CLASS bullet
 - Instance variables:
   - 1d array of each instance of bullet
 - METHODS
-  - shoot (create bullet)
-  - collide
+  - shoot (pvector bullet)
+  - collide ()
