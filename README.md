@@ -43,11 +43,10 @@ Scoreboard
 How will you be using arrays in this project?
 
 1D Array:
-- Create multiple bullets at a time
+- Bullet Projectiles: Our spaceship and enemies
 
 2D Array:
-- Create rows of enemies
-
+- Create rows of enemies (grid)
 
 ### Controls
 How will your program be controlled? List all keyboard commands and mouse interactions.
@@ -58,7 +57,7 @@ Keyboard Commands:
 - space bar = pause/unpause
 
 Mouse Control:
-- Mouse movement:can also move the ball left and right
+- Mouse movement:can also move the ball left and right; disables keyboard arrows when on
 - Mouse pressed:start game
 
 
@@ -68,13 +67,25 @@ What classes will you be creating for this project? Include the instance variabl
 CLASS enemies
 - Instance variables:
   - 2d array of enemies
+  - int x
+  - int y
 - METHODS
-  - create enemies
-  - enemies move
+  - create enemies ()
+  - enemies move(direction)
 
 CLASS bullet
 - Instance variables:
   - 1d array of each instance of bullet
+  - int x
+  - int y
 - METHODS
-  - shoot (create bullet)
-  - collide
+  - shoot (pvector bullet)
+  - collide ()
+ 
+CLASS spaceship
+
+- Instance Variables:
+  - int x
+- METHODS:
+-   shoot(pvector bullet)
+-   spaceship move()
