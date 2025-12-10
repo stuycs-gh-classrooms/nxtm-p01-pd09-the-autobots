@@ -1,9 +1,9 @@
 class Enemy {
-  int x;
-  int y;
   int esize;
   PVector center;
   color c;
+  int speed = 20;
+  int direction = 1;
   
   Enemy(PVector p, int s){
     esize = s;
@@ -19,8 +19,7 @@ class Enemy {
     circle(center.x, center.y, esize);
   }
   void move() {
+    center.x += speed * direction;
+    }
    
   }
-    
-  
-}

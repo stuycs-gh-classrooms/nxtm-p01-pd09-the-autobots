@@ -1,4 +1,5 @@
 SpaceShip player;
+Enemy[][] grid;
 
 boolean leftHeld = false;
 boolean rightHeld = false;
@@ -8,10 +9,20 @@ boolean downHeld = false;
 void setup() {
   size(600, 600);
   player = new SpaceShip(300, 500, 0, 0);
+  grid = new Enemy[3][5];
+  makeBalls(grid);
 }
 
 void draw() {
   background(0);
+  frameRate(30);
+
+  if (frameCount % 30 == 0) {
+    moveGrid(grid);
+  }
+  else {
+    displayBalls(grid);
+  }
 
   player.update();
   player.display();
@@ -61,3 +72,59 @@ void updateMovement() {
   }
 }
 
+void makeBalls(Enemy[][] g) {
+  for (int r = 0; r < g.length; r ++) {
+    for (int c = 0; c < g[r].length; c ++) {
+      g[r][c] = new Enemy(new PVector(25 + (25 * c), 25 + (25 * r)), 25); //was thinking of using step again for in between the ballls but i realized theres no point and did it manually by making it the same as the size of hte ball
+    }
+  }
+}
+
+
+void moveGrid(Enemy[][] g) {
+  for (int r = 0; r < g.length; r ++) {
+    for (int c = 0; c < g[0].length; c ++) {
+      if (g[r][c] != null) {
+        g[r][c].move();
+      }
+    }
+  }
+  
+  boolean hitside = false;
+  for (int r = 0; r < g.length; r ++) {
+    for (int c = 0; c < g[0].length; c ++) {
+      if (g[r][c] != null) {
+        if (g[r][c].center.x < g[r][c].esize/2 || g[r][c].center.x > width - g[r][c].esize/2) {
+          hitside = true;
+        }
+      }
+    }
+  }
+  if (hitside) {
+    for (int r = 0; r < g.length; r ++) {
+      for (int c = 0; c < g[0].length; c ++) {
+        if (g[r][c] != null) {
+          g[r][c].center.y += g[r][c].esize;
+          g[r][c].direction *= -1;
+        }
+      }
+    }
+  }
+  for (int r = 0; r < g.length; r ++) {
+    for (int c = 0; c < g[0].length; c ++) {
+      if (g[r][c] != null) {
+        g[r][c].display();
+      }
+    }
+  }
+}
+
+void displayBalls(Enemy[][] g) {
+  for (int r = 0; r < g.length; r ++) {
+    for (int c = 0; c < g[0].length; c ++) {
+      if (g[r][c] != null) {
+        g[r][c].display();
+      }
+    }
+  }
+}
