@@ -16,6 +16,7 @@ class Enemy {
   }
 
   void display() {
+    alive = true;
     if (alive) {
       fill(c);
       circle(center.x, center.y, esize);
