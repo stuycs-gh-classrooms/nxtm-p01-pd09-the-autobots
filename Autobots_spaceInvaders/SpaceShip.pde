@@ -61,9 +61,9 @@ class SpaceShip {
     float h = shipBody.lengthSM;
 
     // check size of full ship
-    float leftEdge   = pos.x - offset;
-    float rightEdge  = pos.x + w + offset;
-    float topEdge    = pos.y - offset;
+    float leftEdge = pos.x - offset;
+    float rightEdge = pos.x + w + offset;
+    float topEdge = pos.y - offset;
     float bottomEdge = pos.y + h + offset;
 
     // prevent leaving the screen
