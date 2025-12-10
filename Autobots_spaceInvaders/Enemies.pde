@@ -2,7 +2,7 @@ class Enemy {
   int esize;
   PVector center;
   color c;
-  int speed = 20;
+  int speed = 40;
   int direction = 1;
   
   Enemy(PVector p, int s){
