@@ -17,10 +17,11 @@ void draw() {
   background(255);
   frameRate(30);
 
+
   if (frameCount % 30 == 0) {
     moveGrid(grid);
   }
-  else {
+   else {
     displayBalls(grid);
   }
 
@@ -75,7 +76,7 @@ void updateMovement() {
 void makeBalls(Enemy[][] g) {
   for (int r = 0; r < g.length; r ++) {
     for (int c = 0; c < g[r].length; c ++) {
-      g[r][c] = new Enemy(new PVector(40 + (40 * c), 40 + (40 * r)), 40); //was thinking of using step again for in between the ballls but i realized theres no point and did it manually by making it the same as the size of hte ball
+      g[r][c] = new Enemy(new PVector(20 + (40 * c), 40 + (40 * r)), 40); //was thinking of using step again for in between the ballls but i realized theres no point and did it manually by making it the same as the size of hte ball
     }
   }
 }
@@ -89,27 +90,29 @@ void moveGrid(Enemy[][] g) {
       }
     }
   }
-  
   boolean hitside = false;
   for (int r = 0; r < g.length; r ++) {
     for (int c = 0; c < g[0].length; c ++) {
       if (g[r][c] != null) {
-        if (g[r][c].center.x < g[r][c].esize/2 || g[r][c].center.x > width - g[r][c].esize/2) {
+        if (g[r][c].center.x <= g[r][c].esize/2 || g[r][c].center.x >= width - g[r][c].esize/2) {
           hitside = true;
         }
       }
     }
   }
   if (hitside) {
-    for (int r = 0; r < g.length; r ++) {
-      for (int c = 0; c < g[0].length; c ++) {
-        if (g[r][c] != null) {
-          g[r][c].center.y += g[r][c].esize;
-          g[r][c].direction *= -1;
+    if (frameCount % 60 == 0) {
+      for (int r = 0; r < g.length; r ++) {
+        for (int c = 0; c < g[0].length; c ++) {
+          if (g[r][c] != null) {
+            g[r][c].center.y += g[r][c].esize;
+            g[r][c].direction *= -1;
+          }
         }
       }
     }
   }
+
   for (int r = 0; r < g.length; r ++) {
     for (int c = 0; c < g[0].length; c ++) {
       if (g[r][c] != null) {
@@ -118,6 +121,7 @@ void moveGrid(Enemy[][] g) {
     }
   }
 }
+
 
 void displayBalls(Enemy[][] g) {
   for (int r = 0; r < g.length; r ++) {
