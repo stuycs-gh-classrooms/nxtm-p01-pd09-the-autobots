@@ -29,7 +29,7 @@ class Bullet {
 
 
   void display() {
-    fill(c);
+    fill(255);
     circle(pos.x, pos.y, size);
   }//display
 

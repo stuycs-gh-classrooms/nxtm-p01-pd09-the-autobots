@@ -1,5 +1,6 @@
 SpaceShip player;
 Enemy[][] grid;
+Bullet[] bullet;
 
 boolean moveDown = false;
 boolean leftHeld = false;
@@ -11,6 +12,7 @@ void setup() {
   size(600, 600);
   player = new SpaceShip(300, 500, 0, 0);
   grid = new Enemy[3][5];
+  bullet = new Bullet[5]; //max amount of bullets
   makeBalls(grid);
 }
 
@@ -21,12 +23,14 @@ void draw() {
 
   if (frameCount % 30 == 0) {
     moveGrid(grid);
+    arrayShoot(grid);
   } else {
     displayBalls(grid);
   }
 
   player.update();
   player.display();
+  displayBullets(bullet);
 }
 
 void keyPressed() {
@@ -81,7 +85,6 @@ void makeBalls(Enemy[][] g) {
   }
 }
 
-
 void moveGrid(Enemy[][] g) {
   if (moveDown) {
     for (int r = 0; r < g.length; r ++) {
@@ -118,13 +121,28 @@ void moveGrid(Enemy[][] g) {
   }
 }
 
-
 void displayBalls(Enemy[][] g) {
   for (int r = 0; r < g.length; r ++) {
     for (int c = 0; c < g[0].length; c ++) {
       if (g[r][c] != null) {
         g[r][c].display();
       }
+    }
+  }
+}
+
+void arrayShoot(Enemy[][] g) {
+  for (int j = 0; j < 3; j++) {
+    for (int k = 0; k < 5; k++) {
+      g[j][k].shoot();
+    }
+  }
+}
+
+void displayBullets(Bullet[] b) {
+  for (int i = 0; i < b.length; i++) {
+    if (b[i] != null) {
+      b[i].display();
     }
   }
 }
