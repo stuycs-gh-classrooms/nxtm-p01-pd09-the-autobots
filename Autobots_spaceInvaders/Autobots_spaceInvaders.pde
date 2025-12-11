@@ -1,6 +1,7 @@
 SpaceShip player;
 Enemy[][] grid;
 
+boolean moveDown = false;
 boolean leftHeld = false;
 boolean rightHeld = false;
 boolean upHeld = false;
@@ -20,8 +21,7 @@ void draw() {
 
   if (frameCount % 30 == 0) {
     moveGrid(grid);
-  }
-   else {
+  } else {
     displayBalls(grid);
   }
 
@@ -83,42 +83,38 @@ void makeBalls(Enemy[][] g) {
 
 
 void moveGrid(Enemy[][] g) {
-  for (int r = 0; r < g.length; r ++) {
-    for (int c = 0; c < g[0].length; c ++) {
-      if (g[r][c] != null) {
-        g[r][c].move();
-      }
-    }
-  }
-  boolean hitside = false;
-  for (int r = 0; r < g.length; r ++) {
-    for (int c = 0; c < g[0].length; c ++) {
-      if (g[r][c] != null) {
-        if (g[r][c].center.x <= g[r][c].esize/2 || g[r][c].center.x >= width - g[r][c].esize/2) {
-          hitside = true;
+  if (moveDown) {
+    for (int r = 0; r < g.length; r ++) {
+      for (int c = 0; c < g[0].length; c ++) {
+        if (g[r][c] != null) {
+          g[r][c].center.y += g[r][c].esize;
+          g[r][c].direction *= -1;
         }
       }
     }
-  }
-  if (hitside) {
-    if (frameCount % 60 == 0) {
-      for (int r = 0; r < g.length; r ++) {
-        for (int c = 0; c < g[0].length; c ++) {
-          if (g[r][c] != null) {
-            g[r][c].center.y += g[r][c].esize;
-            g[r][c].direction *= -1;
+    moveDown = false;
+  } else {
+    for (int r = 0; r < g.length; r ++) {
+      for (int c = 0; c < g[0].length; c ++) {
+        if (g[r][c] != null) {
+          g[r][c].move();
+        }
+      }
+    }
+    boolean hitside = false;
+    for (int r = 0; r < g.length; r ++) {
+      for (int c = 0; c < g[0].length; c ++) {
+        if (g[r][c] != null) {
+          if (g[r][c].center.x <= g[r][c].esize/2 || g[r][c].center.x >= width - g[r][c].esize/2) {
+            hitside = true;
           }
         }
       }
     }
-  }
-
-  for (int r = 0; r < g.length; r ++) {
-    for (int c = 0; c < g[0].length; c ++) {
-      if (g[r][c] != null) {
-        g[r][c].display();
-      }
+    if (hitside) {
+      moveDown = true;
     }
+    displayBalls(g);
   }
 }
 
