@@ -8,10 +8,14 @@ boolean rightHeld = false;
 boolean upHeld = false;
 boolean downHeld = false;
 boolean gameOver = false;
-boolean paused = false;
+boolean paused = false; //display paused screen
+boolean pause = false; //pause for everything
 
 int lives = 3;
 int wave = 1;
+int leftSpeed, backSpeed = -5;
+int rightSpeed, frontSpeed = 5;
+int shootSpeed = 30; //frames per shot
 
 void setup() {
   size(600, 600);
@@ -50,15 +54,19 @@ void draw() {
     return;
   }
 
-  if (allEnemiesDefeated()) {
-    spawnNewWave();
+  if (pause) {
+    return;
   }
 
+  augment();
   player.update();
 
   if (frameCount % 30 == 0) {
     moveGrid(grid);
     arrayShoot(grid);
+  }
+
+  if (frameCount % 5 == 0) {
     spawnBullet(new PVector(player.pos.x + 15, player.pos.y), true);
   }
 
@@ -71,10 +79,6 @@ void keyPressed() {
   if (keyCode == UP)    upHeld = true;
   if (keyCode == DOWN)  downHeld = true;
 
-  if (key == ' ') {
-    paused = !paused;
-  }
-
   updateMovement();
 }
 
@@ -84,11 +88,36 @@ void keyReleased() {
   if (keyCode == UP)    upHeld = false;
   if (keyCode == DOWN)  downHeld = false;
 
+  if (keyCode == '1' && allEnemiesDefeated()) {
+    lives += 1;
+    spawnNewWave();
+    pause = false;
+  }
+
+  if (keyCode == '2' && allEnemiesDefeated()) {
+    rightSpeed += 1;
+    frontSpeed += 1;
+    leftSpeed -= 1;
+    backSpeed -= 1;
+    spawnNewWave();
+    pause = false;
+  }
+  if (keyCode == '3' && allEnemiesDefeated()) {
+    shootSpeed -= 5;
+    spawnNewWave();
+    pause = false;
+  }
+
+  if (key == ' ') {
+    paused = !paused;
+  }
+
   updateMovement();
 }
 
 void mousePressed() {
   if (mouseButton == LEFT) {
+    wave = 1;
     resetGame();
   }
 }
@@ -290,4 +319,15 @@ void spawnNewWave() {
   wave++;
   makeBalls(grid);
   moveDown = false;
+}
+
+void augment() {
+  if (allEnemiesDefeated()) {
+    pause = true;
+    background(0);
+    fill(0);
+    rect(50, 50, 550, 100);
+    rect(50, 150, 550, 100);
+    rect(50, 250, 550, 100);
+  }
 }
