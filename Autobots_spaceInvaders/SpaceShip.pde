@@ -8,22 +8,15 @@ class SpaceShip {
     pos = new PVector(x, y);
     this.xspeed = xspeed;
     this.yspeed = yspeed;
-
-    shipBody = new Ship(0, 0, 30, 40, 15, 20);
+    shipBody = new Ship(30, 40, 15, 20);
   }
 
   class Ship {
-    int xOffset; //xPos of ship
-    int yOffset; //yPos of ship
-    int widthSM; //size of main body
-    int lengthSM;
-    int widthSS; //size of small bodies
-    int lengthSS;
-    float offset; //offsets for small bodies
+    int widthSM, lengthSM;
+    int widthSS, lengthSS;
+    float offset;
 
-    Ship(int xOffset, int yOffset, int widthSM, int lengthSM, int widthSS, int lengthSS) {
-      this.xOffset = xOffset;
-      this.yOffset = yOffset;
+    Ship(int widthSM, int lengthSM, int widthSS, int lengthSS) {
       this.widthSM = widthSM;
       this.lengthSM = lengthSM;
       this.widthSS = widthSS;
@@ -33,18 +26,17 @@ class SpaceShip {
 
     void display(float x, float y) {
       fill(255);
-
       // main body
       rect(x, y, widthSM, lengthSM);
 
-      // offsets for small bodies
-      float xOffset = widthSS * 0.5;
-      float yOffset = lengthSS * 0.5;
+      // small bodies at corners
+      float smallXOffset = widthSS * 0.5;
+      float smallYOffset = lengthSS * 0.5;
 
-      rect(x - xOffset, y - yOffset, widthSS, lengthSS); //top left
-      rect(x + widthSM - xOffset, y - yOffset, widthSS, lengthSS); //top right
-      rect(x - xOffset, y + lengthSM - yOffset, widthSS, lengthSS); //bottom left
-      rect(x + widthSM - xOffset, y + lengthSM - yOffset, widthSS, lengthSS); //bottom right
+      rect(x - smallXOffset, y - smallYOffset, widthSS, lengthSS); // top-left
+      rect(x + widthSM - smallXOffset, y - smallYOffset, widthSS, lengthSS); // top-right
+      rect(x - smallXOffset, y + lengthSM - smallYOffset, widthSS, lengthSS); // bottom-left
+      rect(x + widthSM - smallXOffset, y + lengthSM - smallYOffset, widthSS, lengthSS); // bottom-right
     }
   }
 
@@ -56,38 +48,12 @@ class SpaceShip {
     pos.x += xspeed;
     pos.y += yspeed;
 
-    float offset = shipBody.lengthSS * 0.5;   // half the small body width
-    float w = shipBody.widthSM; // main body width
+    float offset = shipBody.lengthSS * 0.5;
+    float w = shipBody.widthSM;
     float h = shipBody.lengthSM;
 
-    // check size of full ship
-    float leftEdge = pos.x - offset;
-    float rightEdge = pos.x + w + offset;
-    float topEdge = pos.y - offset;
-    float bottomEdge = pos.y + h + offset;
-
-    // prevent leaving the screen
-    if (leftEdge < 0) {
-      pos.x = offset;
-    }
-    if (rightEdge > width) {
-      pos.x = width - w - offset;
-    }
-    if (topEdge < 0) {
-      pos.y = offset;
-    }
-    if (bottomEdge > height) {
-      pos.y = height - h - offset;
-    }
-  }
-
-  //stop moving x direction
-  void stopX() {
-    xspeed = 0;
-  }
-  
-  //stop moving y direction
-  void stopY() {
-    yspeed = 0;
+    // screen boundaries
+    pos.x = constrain(pos.x, offset, width - w - offset);
+    pos.y = constrain(pos.y, offset, height - h - offset);
   }
 }

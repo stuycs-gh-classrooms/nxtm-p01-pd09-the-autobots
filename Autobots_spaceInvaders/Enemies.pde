@@ -5,16 +5,28 @@ class Enemy {
   int speed = 40;
   int direction = 1;
   boolean alive;
-  Bullet bullet[];
+  int health = 1;
+  float shootProbability = 0.1;
 
-  Enemy(PVector p, int s) {
-    esize = s;
-    center = new PVector(p.x, p.y);
-    alive = true;
-  }
 
-  void setColor(color ec) {
-    c = ec;
+  Enemy(PVector pos, int size, String type) {
+    this.center = pos.copy();
+    this.esize = size;
+    this.alive = true;
+    this.direction = 1;
+
+    if (type.equals("tank")) {
+      health = 2; // needs 2 hits
+      shootProbability = 0.05;
+      c = color(0, 255, 0);
+    } else if (type.equals("shooter")) {
+      health = 1;
+      shootProbability = 0.25; // more likely to shoot
+      c = color(255, 0, 0);
+    } else {
+      health = 1;
+      shootProbability = 0.1;
+    }
   }
 
   void display() {
@@ -28,15 +40,5 @@ class Enemy {
 
   void move() {
     center.x += speed * direction;
-  }
-
-  void shoot() {
-    for (int i = 0; i < 5; i++) {
-      int b = (int)random(0, 11);
-      print(b);
-      if (b == 5) {
-        bullet[1] = new Bullet(center, 10, false);
-      }
-    }
   }
 }
