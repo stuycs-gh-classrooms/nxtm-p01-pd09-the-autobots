@@ -57,8 +57,6 @@ void draw() {
   if (pause) {
     return;
   }
-
-  augment();
   player.update();
 
   if (frameCount % 30 == 0) {
@@ -66,11 +64,14 @@ void draw() {
     arrayShoot(grid);
   }
 
-  if (frameCount % 5 == 0) {
+  if (frameCount % 30 == 0) {
     spawnBullet(new PVector(player.pos.x + 15, player.pos.y), true);
   }
 
   checkBulletCollision();
+  if (allEnemiesDefeated() && !gameOver) {
+    spawnNewWave();
+  }
 }
 
 void keyPressed() {
@@ -157,6 +158,7 @@ void moveGrid(Enemy[][] g) {
       }
     }
     moveDown = false;
+    touchedBottom(g);
   } else {
     for (int r = 0; r < g.length; r++) {
       for (int c = 0; c < g[0].length; c++) {
@@ -175,6 +177,19 @@ void moveGrid(Enemy[][] g) {
     if (hitside) moveDown = true;
 
     displayBalls(g);
+  }
+}
+void touchedBottom(Enemy[][] g) {
+  for (int r = 0; r < g.length; r++) {
+    for (int c = 0; c < g[0].length; c++) {
+      if (g[r][c] != null && g[r][c].alive) {
+        // Checks if it reached same y coordinate where spaceship is
+        if (g[r][c].center.y >= player.pos.y) {
+          gameOver = true;
+          return;
+        }
+      }
+    }
   }
 }
 
@@ -252,7 +267,7 @@ void checkBulletCollision() {
 
     // Enemy bullet hits player
     else {
-      float shipRadius = 30;
+      float shipRadius = 25;
       if (b.pos.dist(player.pos) <= (b.size/2 + shipRadius)) {
         lives--;
         bullet[i] = null;
