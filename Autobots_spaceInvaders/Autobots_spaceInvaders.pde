@@ -55,6 +55,7 @@ void draw() {
   }
 
   if (pause) {
+    augmentDisplay();
     return;
   }
   player.update();
@@ -339,10 +340,19 @@ void spawnNewWave() {
 void augment() {
   if (allEnemiesDefeated()) {
     pause = true;
+  }
+}
+
+void augmentDisplay() {
+  if (pause) {
     background(0);
+    fill(255);
+    rect(50, 100, 500, 100);
+    rect(50, 200, 500, 100);
+    rect(50, 300, 500, 100);
     fill(0);
-    rect(50, 50, 550, 100);
-    rect(50, 150, 550, 100);
-    rect(50, 250, 550, 100);
+    text("Press 1 for +1 health", 200, 150);
+    text("Press 2 for more movement speed", 200, 250);
+    text("Press 3 for more shoot speed", 200, 350);
   }
 }
